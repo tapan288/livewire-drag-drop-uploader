@@ -1,6 +1,13 @@
 <div x-data="uploader" class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <span x-text="dropping"></span>
     <div class="p-6 bg-white border-b border-gray-200">
-        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md border-gray-300">
+        <div x-on:dragover.prevent="dropping = true" x-on:dragleave.prevent="dropping = false" x-on:drop="dropping = false"
+            x-bind:class="{
+                'border-gray-300': !dropping,
+                'border-indigo-600': dropping
+            }"
+            x-on:drop.prevent="handleUpload($event)"
+            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md border-gray-300">
             <div class="space-y-1 text-center">
                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48"
                     aria-hidden="true">
@@ -39,8 +46,9 @@
 @script
     <script>
         Alpine.data('uploader', () => ({
+            dropping: false,
             handleUpload(e) {
-                this.$wire.uploadMultiple('files', e.target.files);
+                this.$wire.uploadMultiple('files', Array.from(e.dataTransfer?.files ?? e.target.files));
             }
         }))
     </script>
