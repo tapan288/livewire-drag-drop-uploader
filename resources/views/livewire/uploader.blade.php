@@ -1,4 +1,4 @@
-<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+<div x-data="uploader" class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
     <div class="p-6 bg-white border-b border-gray-200">
         <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md border-gray-300">
             <div class="space-y-1 text-center">
@@ -12,7 +12,8 @@
                     <label for="file-upload"
                         class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                         <span>Upload a file</span>
-                        <input id="file-upload" name="file-upload" type="file" class="sr-only" multiple>
+                        <input @change="handleUpload" id="file-upload" name="file-upload" type="file" class="sr-only"
+                            multiple>
                     </label>
                     <p class="pl-1">or drag and drop</p>
                 </div>
@@ -34,3 +35,13 @@
         </div>
     </div>
 </div>
+
+@script
+    <script>
+        Alpine.data('uploader', () => ({
+            handleUpload(e) {
+                this.$wire.uploadMultiple('files', e.target.files);
+            }
+        }))
+    </script>
+@endscript
