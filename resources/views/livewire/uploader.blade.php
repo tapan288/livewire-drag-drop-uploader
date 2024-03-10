@@ -30,7 +30,9 @@
             </div>
         </div>
 
-        <p class="mt-2 text-red-500 text-sm">An error occurred</p>
+        @error('files.*')
+            <p class="mt-2 text-red-500 text-sm">{{ $message }}</p>
+        @enderror
 
         <div class="mt-6 space-y-3">
             <div class="space-y-2">

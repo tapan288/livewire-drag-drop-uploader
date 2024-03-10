@@ -13,7 +13,19 @@ class Uploader extends Component
 
     public function updatedFiles($value)
     {
-        dd($value);
+        $this->validate([
+            'files.*' => ['required', 'file', 'max:102400', 'mimes:mp4'],
+        ]);
+    }
+
+    public function messages()
+    {
+        return [
+            'files.*.required' => 'Please select a file to upload',
+            'files.*.file' => 'The file must be a valid file',
+            'files.*.max' => 'The file may not be greater than 100MB',
+            'files.*.mimes' => 'The file must be a file of type: mp4',
+        ];
     }
 
     public function render()
