@@ -1,5 +1,4 @@
 <div x-data="uploader" class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-    <span x-text="dropping"></span>
     <div class="p-6 bg-white border-b border-gray-200">
         <div x-on:dragover.prevent="dropping = true" x-on:dragleave.prevent="dropping = false" x-on:drop="dropping = false"
             x-bind:class="{

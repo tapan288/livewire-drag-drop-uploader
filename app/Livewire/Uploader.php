@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Post;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -16,6 +17,12 @@ class Uploader extends Component
         $this->validate([
             'files.*' => ['required', 'file', 'max:102400', 'mimes:mp4'],
         ]);
+
+        $post = Post::create([]);
+
+        collect($this->files)->each(function ($file) use ($post) {
+            $post->addMedia($file)->toMediaCollection('attachments');
+        });
     }
 
     public function messages()
