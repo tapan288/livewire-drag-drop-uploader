@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Post;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Uploader extends Component
 {
@@ -18,11 +19,23 @@ class Uploader extends Component
             'files.*' => ['required', 'file', 'max:102400', 'mimes:mp4'],
         ]);
 
-        $post = Post::create([]);
+        $post = Post::find(1);
 
         collect($this->files)->each(function ($file) use ($post) {
             $post->addMedia($file)->toMediaCollection('attachments');
         });
+    }
+
+    public function getUploadedFilesProperty()
+    {
+        $post = Post::first();
+
+        return $post->getMedia('attachments');
+    }
+
+    public function download(Media $file)
+    {
+        return $file;
     }
 
     public function messages()
