@@ -33,11 +33,11 @@
             <p class="mt-2 text-red-500 text-sm">{{ $message }}</p>
         @enderror
 
-        <div class="mt-6 space-y-3">
+        <div class="mt-6 space-y-3" x-show="progress" x-cloak>
             <div class="space-y-2">
                 <p class="text-sm font-medium text-gray-900">Uploading files</p>
                 <div class="bg-gray-200 rounded-full overflow-hidden">
-                    <div class="h-2 bg-indigo-600 rounded-full w-20"></div>
+                    <div class="h-2 bg-indigo-600 rounded-full" x-bind:style="`width: ${progress}%`"></div>
                 </div>
             </div>
         </div>
@@ -48,8 +48,19 @@
     <script>
         Alpine.data('uploader', () => ({
             dropping: false,
+            progress: 0,
             handleUpload(e) {
-                this.$wire.uploadMultiple('files', Array.from(e.dataTransfer?.files ?? e.target.files));
+                this.$wire.uploadMultiple(
+                    'files',
+                    Array.from(e.dataTransfer?.files ?? e.target.files),
+                    (uploadedFileName) => {},
+                    (error) => {
+                        console.log(error);
+                    },
+                    (progress) => {
+                        this.progress = progress.detail.progress;
+                    }
+                );
             }
         }))
     </script>
